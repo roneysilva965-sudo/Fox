@@ -1,0 +1,17 @@
+{
+  "name": "fox-backend",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Executable delivery platform backend foundation with merchant/order/realtime flows",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/main.js",
+    "start": "node src/main.js",
+    "test": "node --test",
+    "check:openapi": "python3 - <<'PY'\nfrom pathlib import Path\ntext = Path('../../docs/api/openapi.yaml').read_text()\nassert 'openapi: 3.1.0' in text\nassert '/merchant/orders/{orderId}/accept:' in text\nassert '/customer/orders/{orderId}/tracking:' in text\nprint('openapi markers ok')\nPY",
+    "check:schema": "python3 - <<'PY'\nfrom pathlib import Path\ntext = Path('../../docs/database/schema.sql').read_text()\nassert 'CREATE TABLE orders' in text\nassert 'CREATE TABLE merchants' in text\nprint('schema ok')\nPY"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
