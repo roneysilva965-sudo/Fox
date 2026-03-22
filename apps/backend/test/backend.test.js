@@ -27,25 +27,10 @@ async function login(baseUrl, phone, role) {
   return payload.data.token;
 }
 
-test('merchant web panel and settings/discovery flows work together', async () => {
+test('merchant settings and customer pricing/discovery flows work together', async () => {
   const { server, baseUrl } = await startServer();
 
   try {
-    const merchantPanelResponse = await fetch(`${baseUrl}/app/merchant`);
-    const merchantPanelHtml = await merchantPanelResponse.text();
-    assert.equal(merchantPanelResponse.status, 200);
-    assert.match(merchantPanelHtml, /Fox Merchant/);
-
-    const courierPanelResponse = await fetch(`${baseUrl}/app/courier`);
-    const courierPanelHtml = await courierPanelResponse.text();
-    assert.equal(courierPanelResponse.status, 200);
-    assert.match(courierPanelHtml, /Fox Courier/);
-
-    const customerPanelResponse = await fetch(`${baseUrl}/app/customer`);
-    const customerPanelHtml = await customerPanelResponse.text();
-    assert.equal(customerPanelResponse.status, 200);
-    assert.match(customerPanelHtml, /Fox Customer/);
-
     const merchantToken = await login(baseUrl, '5511911111111', 'merchant_owner');
 
     const settingsResponse = await fetch(`${baseUrl}/merchant/settings`, {
@@ -98,21 +83,6 @@ test('delivery completion credits customer cashback, supports courier withdrawal
   const { server, baseUrl } = await startServer();
 
   try {
-    const merchantPanelResponse = await fetch(`${baseUrl}/app/merchant`);
-    const merchantPanelHtml = await merchantPanelResponse.text();
-    assert.equal(merchantPanelResponse.status, 200);
-    assert.match(merchantPanelHtml, /Fox Merchant/);
-
-    const courierPanelResponse = await fetch(`${baseUrl}/app/courier`);
-    const courierPanelHtml = await courierPanelResponse.text();
-    assert.equal(courierPanelResponse.status, 200);
-    assert.match(courierPanelHtml, /Fox Courier/);
-
-    const customerPanelResponse = await fetch(`${baseUrl}/app/customer`);
-    const customerPanelHtml = await customerPanelResponse.text();
-    assert.equal(customerPanelResponse.status, 200);
-    assert.match(customerPanelHtml, /Fox Customer/);
-
     const merchantToken = await login(baseUrl, '5511911111111', 'merchant_owner');
     const courierToken = await login(baseUrl, '5511922222222', 'courier');
     const adminToken = await login(baseUrl, '5511944444444', 'admin');

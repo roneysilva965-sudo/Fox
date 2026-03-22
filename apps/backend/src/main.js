@@ -1,6 +1,4 @@
 import http from 'node:http';
-import fs from 'node:fs';
-import path from 'node:path';
 import { json, readJsonBody } from './core/http.js';
 import { Router } from './core/router.js';
 import { store } from './data/store.js';
@@ -26,15 +24,6 @@ const courierService = new CourierService(store);
 const pricingService = new PricingService(store);
 const discoveryService = new DiscoveryService(store);
 const adminService = new AdminService(store);
-
-const merchantAppDir = path.resolve(process.cwd(), '../web/merchant');
-const courierAppDir = path.resolve(process.cwd(), '../web/courier');
-const customerAppDir = path.resolve(process.cwd(), '../web/customer');
-
-function serveStaticFile(response, filePath, contentType) {
-  response.writeHead(200, { 'Content-Type': contentType });
-  response.end(fs.readFileSync(filePath));
-}
 
 function getBearerToken(request) {
   const header = request.headers.authorization ?? '';
@@ -72,42 +61,6 @@ router.register('GET', '/auth/me', async (request, response) => {
   }
 
   json(response, 200, { data: session.user });
-});
-
-router.register('GET', '/app/merchant', async (_request, response) => {
-  serveStaticFile(response, path.join(merchantAppDir, 'index.html'), 'text/html; charset=utf-8');
-});
-
-router.register('GET', '/app/merchant/app.js', async (_request, response) => {
-  serveStaticFile(response, path.join(merchantAppDir, 'app.js'), 'application/javascript; charset=utf-8');
-});
-
-router.register('GET', '/app/merchant/styles.css', async (_request, response) => {
-  serveStaticFile(response, path.join(merchantAppDir, 'styles.css'), 'text/css; charset=utf-8');
-});
-
-router.register('GET', '/app/courier', async (_request, response) => {
-  serveStaticFile(response, path.join(courierAppDir, 'index.html'), 'text/html; charset=utf-8');
-});
-
-router.register('GET', '/app/courier/app.js', async (_request, response) => {
-  serveStaticFile(response, path.join(courierAppDir, 'app.js'), 'application/javascript; charset=utf-8');
-});
-
-router.register('GET', '/app/courier/styles.css', async (_request, response) => {
-  serveStaticFile(response, path.join(courierAppDir, 'styles.css'), 'text/css; charset=utf-8');
-});
-
-router.register('GET', '/app/customer', async (_request, response) => {
-  serveStaticFile(response, path.join(customerAppDir, 'index.html'), 'text/html; charset=utf-8');
-});
-
-router.register('GET', '/app/customer/app.js', async (_request, response) => {
-  serveStaticFile(response, path.join(customerAppDir, 'app.js'), 'application/javascript; charset=utf-8');
-});
-
-router.register('GET', '/app/customer/styles.css', async (_request, response) => {
-  serveStaticFile(response, path.join(customerAppDir, 'styles.css'), 'text/css; charset=utf-8');
 });
 
 router.register('GET', '/health', async (_request, response) => {

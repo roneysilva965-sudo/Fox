@@ -15,9 +15,6 @@ O projeto agora contém um **backend executável mais completo**, cobrindo cinco
 - aceite da oferta, criação de task de entrega, progressão da entrega, saque simplificado e crédito na wallet do entregador;
 - extrato financeiro do lojista com ledger simplificado após entrega concluída;
 - visão operacional básica para admin/backoffice;
-- painel web inicial do lojista servido pelo backend em `/app/merchant`;
-- painel web inicial do entregador servido pelo backend em `/app/courier`;
-- painel web inicial do cliente servido pelo backend em `/app/customer`;
 - stream SSE para pedidos do lojista e ofertas/eventos do entregador;
 - persistência local em arquivo JSON fora do modo de teste.
 
@@ -36,9 +33,6 @@ O projeto agora contém um **backend executável mais completo**, cobrindo cinco
 - `apps/backend/src/modules/admin`: visão resumida de backoffice.
 - `apps/backend/src/modules/realtime`: stream SSE para operação em tempo real.
 - `apps/backend/test/backend.test.js`: testes ponta a ponta dos fluxos de lojista, cliente, entregador e admin.
-- `apps/web/merchant`: painel web inicial do lojista com dashboard, settings, pedidos e catálogo.
-- `apps/web/courier`: painel web inicial do entregador com ofertas, task updates e wallet.
-- `apps/web/customer`: painel web inicial do cliente com feed, pricing, pedido e wallet.
 - `docs/benchmark/ifood-6ammart-analysis.md`: benchmark funcional e requisitos-alvo.
 - `docs/architecture/platform-architecture.md`: arquitetura alvo de microserviços.
 - `docs/database/schema.sql`: modelo relacional-alvo em PostgreSQL.
@@ -107,12 +101,6 @@ Servidor padrão: `http://localhost:3000`.
 
 ### Admin
 - `GET /admin/overview`
-
-## Painéis web
-
-- Lojista: `http://localhost:3000/app/merchant`
-- Entregador: `http://localhost:3000/app/courier`
-- Cliente: `http://localhost:3000/app/customer`
 
 ## Exemplo rápido
 
