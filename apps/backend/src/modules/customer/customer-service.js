@@ -25,4 +25,16 @@ export class CustomerService {
       },
     };
   }
+
+  getWalletByPhone(phone) {
+    const customer = this.store.users.find((user) => user.phone === phone && user.role === 'customer');
+    if (!customer) {
+      return null;
+    }
+
+    return {
+      customerId: customer.id,
+      availableBalance: Number((customer.walletBalance ?? 0).toFixed(2)),
+    };
+  }
 }

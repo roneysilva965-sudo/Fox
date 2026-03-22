@@ -1,6 +1,6 @@
 {
   "name": "fox-backend",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "Executable delivery platform backend foundation with merchant/order/realtime flows",
   "type": "module",

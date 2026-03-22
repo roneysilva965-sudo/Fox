@@ -11,6 +11,7 @@ import { CatalogService } from './modules/catalog/catalog-service.js';
 import { CourierService } from './modules/courier/courier-service.js';
 import { PricingService } from './modules/pricing/pricing-service.js';
 import { DiscoveryService } from './modules/discovery/discovery-service.js';
+import { AdminService } from './modules/admin/admin-service.js';
 
 const router = new Router();
 const orderService = new OrderService(store);
@@ -22,6 +23,7 @@ const catalogService = new CatalogService(store);
 const courierService = new CourierService(store);
 const pricingService = new PricingService(store);
 const discoveryService = new DiscoveryService(store);
+const adminService = new AdminService(store);
 
 function getBearerToken(request) {
   const header = request.headers.authorization ?? '';
@@ -79,6 +81,16 @@ router.register('POST', '/customer/cart/price', async (request, response) => {
   const body = await readJsonBody(request);
   const pricing = pricingService.priceCart(body);
   json(response, 200, { data: pricing });
+});
+
+router.register('GET', '/customer/wallet', async (request, response) => {
+  const phone = request.query.phone ?? '5511933333333';
+  const wallet = customerService.getWalletByPhone(phone);
+  if (!wallet) {
+    json(response, 404, { message: 'Customer not found' });
+    return;
+  }
+  json(response, 200, { data: wallet });
 });
 
 router.register('GET', '/merchant/orders', async (request, response) => {
@@ -159,6 +171,22 @@ router.register('GET', '/merchant/finance/statement', async (request, response) 
   json(response, 200, { data: merchantService.getFinanceStatement(session.user.merchantId) });
 });
 
+router.register('GET', '/merchant/settings', async (request, response) => {
+  const session = requireRole(request, response, 'merchant_owner');
+  if (!session) return;
+
+  json(response, 200, { data: merchantService.getSettings(session.user.merchantId) });
+});
+
+router.register('PATCH', '/merchant/settings', async (request, response) => {
+  const session = requireRole(request, response, 'merchant_owner');
+  if (!session) return;
+
+  const body = await readJsonBody(request);
+  const settings = merchantService.updateSettings(session.user.merchantId, body);
+  json(response, 200, { data: settings });
+});
+
 router.register('GET', '/merchant/catalog/products', async (request, response) => {
   const session = requireRole(request, response, 'merchant_owner');
   if (!session) return;
@@ -196,7 +224,7 @@ router.register('POST', '/customer/orders', async (request, response) => {
   const order = orderService.createCustomerOrder({
     merchantId,
     customerName: body.customerName ?? 'Cliente Fox',
-    customerPhone: body.customerPhone ?? '5511999999999',
+    customerPhone: body.customerPhone ?? '5511933333333',
     pricing,
   });
 
@@ -260,12 +288,32 @@ router.register('GET', '/courier/wallet', async (request, response) => {
   json(response, 200, { data: wallet });
 });
 
+router.register('POST', '/courier/wallet/withdrawals', async (request, response) => {
+  const session = requireRole(request, response, 'courier');
+  if (!session) return;
+
+  try {
+    const body = await readJsonBody(request);
+    const withdrawal = courierService.requestWithdrawal(session.user.courierId, Number(body.amount));
+    json(response, 201, { data: withdrawal });
+  } catch (error) {
+    json(response, 422, { message: error.message });
+  }
+});
+
 router.register('GET', '/courier/offers/stream', async (request, response) => {
   const session = requireRole(request, response, 'courier');
   if (!session) return;
 
   const detach = realtimeService.attachStream(response, 'courier', session.user.courierId);
   request.on('close', detach);
+});
+
+router.register('GET', '/admin/overview', async (request, response) => {
+  const session = requireRole(request, response, 'admin');
+  if (!session) return;
+
+  json(response, 200, { data: adminService.getOverview() });
 });
 
 export function buildServer() {

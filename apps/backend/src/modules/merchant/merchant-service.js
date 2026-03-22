@@ -45,4 +45,30 @@ export class MerchantService {
       entries: ledgerEntries,
     };
   }
+
+  getSettings(merchantId) {
+    const merchant = this.store.getMerchant(merchantId);
+    if (!merchant) {
+      return null;
+    }
+
+    return {
+      merchantId: merchant.id,
+      status: merchant.status,
+      averagePrepTimeMin: merchant.averagePrepTimeMin,
+      deliveryTimeMin: merchant.deliveryTimeMin,
+      distanceKm: merchant.distanceKm,
+      tags: merchant.tags,
+    };
+  }
+
+  updateSettings(merchantId, payload) {
+    return this.store.updateMerchant(merchantId, (merchant) => {
+      if (payload.status) merchant.status = payload.status;
+      if (payload.averagePrepTimeMin) merchant.averagePrepTimeMin = Number(payload.averagePrepTimeMin);
+      if (payload.deliveryTimeMin) merchant.deliveryTimeMin = Number(payload.deliveryTimeMin);
+      if (payload.distanceKm) merchant.distanceKm = Number(payload.distanceKm);
+      if (payload.tags) merchant.tags = payload.tags;
+    });
+  }
 }

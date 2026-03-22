@@ -55,6 +55,7 @@ function defaultData() {
       { id: 'user-merchant-owner', fullName: 'Merchant Owner', phone: '5511911111111', role: 'merchant_owner', merchantId: 'merchant-burger-house' },
       { id: 'user-courier-1', fullName: 'Courier One', phone: '5511922222222', role: 'courier', courierId: 'courier-1' },
       { id: 'user-customer-1', fullName: 'Customer One', phone: '5511933333333', role: 'customer', walletBalance: 15 },
+      { id: 'user-admin-1', fullName: 'Admin One', phone: '5511944444444', role: 'admin' },
     ],
     couriers: [
       {
@@ -89,6 +90,30 @@ export class InMemoryStore {
   reset() {
     const restored = this.loadPersistedData();
     const data = restored ?? defaultData();
+
+    const seed = defaultData();
+    for (const user of seed.users) {
+      if (!data.users.some((candidate) => candidate.id === user.id)) {
+        data.users.push(user);
+      }
+    }
+    for (const coupon of seed.coupons) {
+      if (!data.coupons?.some((candidate) => candidate.id === coupon.id)) {
+        data.coupons = [...(data.coupons ?? []), coupon];
+      }
+    }
+    for (const merchant of seed.merchants) {
+      const existing = data.merchants.find((candidate) => candidate.id === merchant.id);
+      if (!existing) {
+        data.merchants.push(merchant);
+      } else {
+        existing.categories ??= merchant.categories;
+        existing.deliveryTimeMin ??= merchant.deliveryTimeMin;
+        existing.distanceKm ??= merchant.distanceKm;
+        existing.tags ??= merchant.tags;
+        existing.walletBalance ??= merchant.walletBalance;
+      }
+    }
 
     this.merchants = data.merchants;
     this.products = data.products;
@@ -148,6 +173,17 @@ export class InMemoryStore {
     return this.merchants.find((merchant) => merchant.id === merchantId) ?? null;
   }
 
+  updateMerchant(merchantId, mutate) {
+    const merchant = this.getMerchant(merchantId);
+    if (!merchant) {
+      return null;
+    }
+
+    mutate(merchant);
+    this.persist();
+    return merchant;
+  }
+
   listMerchants() {
     return this.merchants.filter((merchant) => merchant.status === 'active');
   }
@@ -183,6 +219,17 @@ export class InMemoryStore {
 
   getUser(userId) {
     return this.users.find((user) => user.id === userId) ?? null;
+  }
+
+  updateUser(userId, mutate) {
+    const user = this.getUser(userId);
+    if (!user) {
+      return null;
+    }
+
+    mutate(user);
+    this.persist();
+    return user;
   }
 
   createSession(user) {
@@ -379,6 +426,11 @@ export class InMemoryStore {
             },
           });
         }
+
+        const customer = this.users.find((candidate) => candidate.phone === order.customerPhone && candidate.role === 'customer');
+        if (customer) {
+          customer.walletBalance = Number(((customer.walletBalance ?? 0) + (order.cashbackEarned ?? 0)).toFixed(2));
+        }
       }
     }
 
@@ -389,6 +441,36 @@ export class InMemoryStore {
 
   getCourier(courierId) {
     return this.couriers.find((courier) => courier.id === courierId) ?? null;
+  }
+
+  requestCourierWithdrawal(courierId, amount) {
+    const courier = this.getCourier(courierId);
+    if (!courier) {
+      return null;
+    }
+    if (amount > courier.wallet.availableBalance) {
+      throw new Error('Insufficient balance');
+    }
+
+    courier.wallet.availableBalance = Number((courier.wallet.availableBalance - amount).toFixed(2));
+    const withdrawal = { id: randomUUID(), amount, kind: 'withdrawal', createdAt: now() };
+    courier.wallet.withdrawals.unshift(withdrawal);
+    this.persist();
+    return withdrawal;
+  }
+
+  getAdminOverview() {
+    const totalOrders = this.orders.length;
+    const deliveredOrders = this.orders.filter((order) => order.status === 'delivered');
+    return {
+      totalOrders,
+      deliveredOrders: deliveredOrders.length,
+      gmv: Number(deliveredOrders.reduce((sum, order) => sum + order.total, 0).toFixed(2)),
+      activeMerchants: this.merchants.filter((merchant) => merchant.status === 'active').length,
+      pausedMerchants: this.merchants.filter((merchant) => merchant.status === 'paused').length,
+      activeCouriers: this.couriers.filter((courier) => courier.isOnline).length,
+      totalCustomers: this.users.filter((user) => user.role === 'customer').length,
+    };
   }
 
   registerClient(response, channel, entityId) {
