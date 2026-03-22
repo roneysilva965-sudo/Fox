@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: fox
+      POSTGRES_USER: fox
+      POSTGRES_PASSWORD: fox
+    ports:
+      - '5432:5432'
+  redis:
+    image: redis:7
+    ports:
+      - '6379:6379'
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  gateway:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "echo 'placeholder api-gateway container' && tail -f /dev/null"
+    volumes:
+      - ../apps/backend:/app
+    ports:
+      - '3000:3000'
