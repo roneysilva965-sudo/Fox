@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fox Merchant Panel</title>
+    <link rel="stylesheet" href="/app/merchant/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <h1>Fox Merchant</h1>
+        <p>Painel operacional do lojista.</p>
+        <button id="loginButton">Entrar com seed</button>
+        <div id="sessionStatus" class="session-status">Desconectado</div>
+      </aside>
+
+      <main class="content">
+        <section class="hero">
+          <h2>Operação em tempo real</h2>
+          <p>Acompanhe dashboard, pedidos, catálogo e configurações da loja.</p>
+        </section>
+
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Dashboard</h3>
+            <pre id="dashboardOutput">Aguardando login…</pre>
+          </article>
+          <article class="card">
+            <h3>Settings da loja</h3>
+            <form id="settingsForm">
+              <label>Status
+                <select name="status">
+                  <option value="active">Ativa</option>
+                  <option value="paused">Pausada</option>
+                </select>
+              </label>
+              <label>Preparo médio (min)
+                <input type="number" name="averagePrepTimeMin" min="1" value="20" />
+              </label>
+              <button type="submit">Salvar settings</button>
+            </form>
+            <pre id="settingsOutput">Aguardando login…</pre>
+          </article>
+        </section>
+
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Pedidos</h3>
+            <button id="refreshOrdersButton">Atualizar pedidos</button>
+            <pre id="ordersOutput">Aguardando login…</pre>
+          </article>
+          <article class="card">
+            <h3>Catálogo</h3>
+            <form id="productForm">
+              <label>Nome
+                <input type="text" name="name" placeholder="Novo produto" required />
+              </label>
+              <label>Preço base
+                <input type="number" name="basePrice" step="0.01" value="29.90" required />
+              </label>
+              <label>Estoque
+                <input type="number" name="stockQuantity" value="20" required />
+              </label>
+              <button type="submit">Criar produto</button>
+            </form>
+            <pre id="catalogOutput">Aguardando login…</pre>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app/merchant/app.js"></script>
+  </body>
+</html>

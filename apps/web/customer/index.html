@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fox Customer Panel</title>
+    <link rel="stylesheet" href="/app/customer/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <h1>Fox Customer</h1>
+        <p>Descoberta, pricing, pedido e wallet do cliente.</p>
+        <button id="loadFeedButton">Carregar feed</button>
+        <button id="walletButton">Ver wallet</button>
+      </aside>
+      <main class="content">
+        <section class="card hero">
+          <h2>Explorar e pedir</h2>
+          <p>Use o feed para ver lojas, simule pricing e crie um pedido com cupom.</p>
+        </section>
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Feed</h3>
+            <pre id="feedOutput">Aguardando ação…</pre>
+          </article>
+          <article class="card">
+            <h3>Wallet</h3>
+            <pre id="walletOutput">Aguardando ação…</pre>
+          </article>
+        </section>
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Pricing</h3>
+            <form id="pricingForm">
+              <label>Produto
+                <select name="productId">
+                  <option value="product-smash-classic">Smash Classic</option>
+                  <option value="product-fries-large">Large Fries</option>
+                </select>
+              </label>
+              <label>Quantidade
+                <input type="number" name="quantity" min="1" value="2" />
+              </label>
+              <label>Cupom
+                <select name="couponCode">
+                  <option value="FOX10">FOX10</option>
+                  <option value="FRETEGRATIS">FRETEGRATIS</option>
+                </select>
+              </label>
+              <button type="submit">Calcular pricing</button>
+            </form>
+            <pre id="pricingOutput">Aguardando ação…</pre>
+          </article>
+          <article class="card">
+            <h3>Criar pedido</h3>
+            <form id="orderForm">
+              <label>Nome
+                <input type="text" name="customerName" value="Cliente Fox" />
+              </label>
+              <label>Telefone
+                <input type="text" name="customerPhone" value="5511933333333" />
+              </label>
+              <label>Produto
+                <select name="productId">
+                  <option value="product-smash-classic">Smash Classic</option>
+                  <option value="product-fries-large">Large Fries</option>
+                </select>
+              </label>
+              <label>Quantidade
+                <input type="number" name="quantity" min="1" value="1" />
+              </label>
+              <label>Cupom
+                <select name="couponCode">
+                  <option value="FOX10">FOX10</option>
+                  <option value="FRETEGRATIS">FRETEGRATIS</option>
+                </select>
+              </label>
+              <button type="submit">Criar pedido</button>
+            </form>
+            <pre id="orderOutput">Aguardando ação…</pre>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/app/customer/app.js"></script>
+  </body>
+</html>

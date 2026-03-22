@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fox Courier Panel</title>
+    <link rel="stylesheet" href="/app/courier/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <h1>Fox Courier</h1>
+        <p>Painel operacional do entregador.</p>
+        <button id="loginButton">Entrar com seed</button>
+        <div id="sessionStatus" class="session-status">Desconectado</div>
+      </aside>
+      <main class="content">
+        <section class="hero card">
+          <h2>Ofertas, entregas e wallet</h2>
+          <p>Acompanhe ofertas ativas, aceite corridas, atualize tarefas e monitore os ganhos.</p>
+        </section>
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Ofertas ativas</h3>
+            <button id="refreshOffersButton">Atualizar ofertas</button>
+            <pre id="offersOutput">Aguardando login…</pre>
+          </article>
+          <article class="card">
+            <h3>Wallet</h3>
+            <button id="refreshWalletButton">Atualizar wallet</button>
+            <pre id="walletOutput">Aguardando login…</pre>
+          </article>
+        </section>
+        <section class="grid two-up">
+          <article class="card">
+            <h3>Aceitar oferta</h3>
+            <form id="acceptOfferForm">
+              <label>ID da oferta
+                <input type="text" name="offerId" placeholder="Cole o ID da oferta" required />
+              </label>
+              <button type="submit">Aceitar oferta</button>
+            </form>
+            <pre id="acceptOutput">Aguardando ação…</pre>
+          </article>
+          <article class="card">
+            <h3>Atualizar task</h3>
+            <form id="taskForm">
+              <label>ID da task
+                <input type="text" name="taskId" placeholder="Cole o ID da task" required />
+              </label>
+              <label>Status
+                <select name="status">
+                  <option value="picked_up">Pedido coletado</option>
+                  <option value="completed">Entregue</option>
+                </select>
+              </label>
+              <button type="submit">Atualizar task</button>
+            </form>
+            <pre id="taskOutput">Aguardando ação…</pre>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/app/courier/app.js"></script>
+  </body>
+</html>
