@@ -28,4 +28,8 @@ export class CourierService {
       history: courier.wallet.withdrawals,
     };
   }
+
+  requestWithdrawal(courierId, amount) {
+    return this.store.requestCourierWithdrawal(courierId, amount);
+  }
 }

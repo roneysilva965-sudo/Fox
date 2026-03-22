@@ -23,6 +23,10 @@ function defaultData() {
         averagePrepTimeMin: 20,
         commissionRate: 12,
         walletBalance: 0,
+        categories: ['Burgers', 'Porções'],
+        deliveryTimeMin: 35,
+        distanceKm: 3.2,
+        tags: ['entrega rápida', 'smash', 'frete grátis acima de 50'],
       },
     ],
     products: [
@@ -50,7 +54,8 @@ function defaultData() {
     users: [
       { id: 'user-merchant-owner', fullName: 'Merchant Owner', phone: '5511911111111', role: 'merchant_owner', merchantId: 'merchant-burger-house' },
       { id: 'user-courier-1', fullName: 'Courier One', phone: '5511922222222', role: 'courier', courierId: 'courier-1' },
-      { id: 'user-customer-1', fullName: 'Customer One', phone: '5511933333333', role: 'customer' },
+      { id: 'user-customer-1', fullName: 'Customer One', phone: '5511933333333', role: 'customer', walletBalance: 15 },
+      { id: 'user-admin-1', fullName: 'Admin One', phone: '5511944444444', role: 'admin' },
     ],
     couriers: [
       {
@@ -68,6 +73,11 @@ function defaultData() {
     deliveryTasks: [],
     offers: [],
     events: [],
+    coupons: [
+      { id: 'coupon-fox10', code: 'FOX10', type: 'percentage', value: 10, maxDiscount: 12, active: true },
+      { id: 'coupon-frete', code: 'FRETEGRATIS', type: 'free_delivery', value: 0, maxDiscount: null, active: true },
+    ],
+    ledgerEntries: [],
   };
 }
 
@@ -81,6 +91,30 @@ export class InMemoryStore {
     const restored = this.loadPersistedData();
     const data = restored ?? defaultData();
 
+    const seed = defaultData();
+    for (const user of seed.users) {
+      if (!data.users.some((candidate) => candidate.id === user.id)) {
+        data.users.push(user);
+      }
+    }
+    for (const coupon of seed.coupons) {
+      if (!data.coupons?.some((candidate) => candidate.id === coupon.id)) {
+        data.coupons = [...(data.coupons ?? []), coupon];
+      }
+    }
+    for (const merchant of seed.merchants) {
+      const existing = data.merchants.find((candidate) => candidate.id === merchant.id);
+      if (!existing) {
+        data.merchants.push(merchant);
+      } else {
+        existing.categories ??= merchant.categories;
+        existing.deliveryTimeMin ??= merchant.deliveryTimeMin;
+        existing.distanceKm ??= merchant.distanceKm;
+        existing.tags ??= merchant.tags;
+        existing.walletBalance ??= merchant.walletBalance;
+      }
+    }
+
     this.merchants = data.merchants;
     this.products = data.products;
     this.users = data.users;
@@ -90,6 +124,8 @@ export class InMemoryStore {
     this.deliveryTasks = data.deliveryTasks;
     this.offers = data.offers;
     this.events = data.events;
+    this.coupons = data.coupons ?? [];
+    this.ledgerEntries = data.ledgerEntries ?? [];
     this.sseClients = new Set();
   }
 
@@ -119,6 +155,8 @@ export class InMemoryStore {
         deliveryTasks: this.deliveryTasks,
         offers: this.offers,
         events: this.events,
+        coupons: this.coupons,
+        ledgerEntries: this.ledgerEntries,
       }, null, 2),
     );
   }
@@ -135,8 +173,27 @@ export class InMemoryStore {
     return this.merchants.find((merchant) => merchant.id === merchantId) ?? null;
   }
 
+  updateMerchant(merchantId, mutate) {
+    const merchant = this.getMerchant(merchantId);
+    if (!merchant) {
+      return null;
+    }
+
+    mutate(merchant);
+    this.persist();
+    return merchant;
+  }
+
+  listMerchants() {
+    return this.merchants.filter((merchant) => merchant.status === 'active');
+  }
+
   listProductsByMerchant(merchantId) {
     return this.products.filter((product) => product.merchantId === merchantId);
+  }
+
+  findProduct(productId) {
+    return this.products.find((product) => product.id === productId) ?? null;
   }
 
   createProduct(payload) {
@@ -160,6 +217,21 @@ export class InMemoryStore {
     return this.users.find((user) => user.phone === phone && (!role || user.role === role)) ?? null;
   }
 
+  getUser(userId) {
+    return this.users.find((user) => user.id === userId) ?? null;
+  }
+
+  updateUser(userId, mutate) {
+    const user = this.getUser(userId);
+    if (!user) {
+      return null;
+    }
+
+    mutate(user);
+    this.persist();
+    return user;
+  }
+
   createSession(user) {
     const session = {
       id: randomUUID(),
@@ -177,18 +249,12 @@ export class InMemoryStore {
     return this.sessions.find((session) => session.token === token) ?? null;
   }
 
+  findCoupon(code) {
+    return this.coupons.find((coupon) => coupon.code === code && coupon.active) ?? null;
+  }
+
   createOrder(payload) {
     const createdAt = now();
-    const items = payload.items.map((item) => ({
-      productId: item.productId,
-      name: item.name,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice,
-      totalPrice: Number((item.quantity * item.unitPrice).toFixed(2)),
-    }));
-    const subtotal = Number(items.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2));
-    const deliveryFee = Number((payload.deliveryFee ?? 7.5).toFixed(2));
-    const total = Number((subtotal + deliveryFee).toFixed(2));
     const order = {
       id: randomUUID(),
       customerName: payload.customerName,
@@ -198,10 +264,14 @@ export class InMemoryStore {
       prepTimeMin: null,
       rejectionReason: null,
       courierId: null,
-      items,
-      subtotal,
-      deliveryFee,
-      total,
+      couponCode: payload.pricing.couponCode ?? null,
+      items: payload.pricing.items,
+      subtotal: payload.pricing.subtotal,
+      deliveryFee: payload.pricing.deliveryFee,
+      serviceFee: payload.pricing.serviceFee,
+      discountAmount: payload.pricing.discountAmount,
+      cashbackEarned: payload.pricing.cashbackEarned,
+      total: payload.pricing.total,
       createdAt,
       updatedAt: createdAt,
       timeline: buildOrderTimeline('placed', 'Pedido criado pelo cliente'),
@@ -298,6 +368,21 @@ export class InMemoryStore {
     return this.deliveryTasks.find((task) => task.id === taskId) ?? null;
   }
 
+  postLedgerEntry(entry) {
+    const ledgerEntry = {
+      id: randomUUID(),
+      createdAt: now(),
+      ...entry,
+    };
+    this.ledgerEntries.unshift(ledgerEntry);
+    this.persist();
+    return ledgerEntry;
+  }
+
+  listLedgerEntriesForMerchant(merchantId) {
+    return this.ledgerEntries.filter((entry) => entry.accountType === 'merchant' && entry.accountId === merchantId);
+  }
+
   updateTask(taskId, status) {
     const task = this.getTask(taskId);
     if (!task) {
@@ -316,11 +401,35 @@ export class InMemoryStore {
 
       if (status === 'completed') {
         const courier = this.couriers.find((candidate) => candidate.id === task.courierId);
+        const merchant = this.getMerchant(order.merchantId);
+        const courierEarning = Number((order.deliveryFee + 6).toFixed(2));
+        const merchantNet = Number((order.subtotal - (order.subtotal * (merchant?.commissionRate ?? 0) / 100)).toFixed(2));
+
         if (courier) {
-          const earning = Number((order.deliveryFee + 6).toFixed(2));
-          courier.wallet.availableBalance = Number((courier.wallet.availableBalance + earning).toFixed(2));
-          courier.wallet.totalEarned = Number((courier.wallet.totalEarned + earning).toFixed(2));
-          courier.wallet.withdrawals.unshift({ id: randomUUID(), amount: earning, kind: 'earning', createdAt: now() });
+          courier.wallet.availableBalance = Number((courier.wallet.availableBalance + courierEarning).toFixed(2));
+          courier.wallet.totalEarned = Number((courier.wallet.totalEarned + courierEarning).toFixed(2));
+          courier.wallet.withdrawals.unshift({ id: randomUUID(), amount: courierEarning, kind: 'earning', createdAt: now() });
+        }
+
+        if (merchant) {
+          merchant.walletBalance = Number((merchant.walletBalance + merchantNet).toFixed(2));
+          this.postLedgerEntry({
+            accountType: 'merchant',
+            accountId: merchant.id,
+            orderId: order.id,
+            entryType: 'merchant_net_revenue',
+            amount: merchantNet,
+            meta: {
+              subtotal: order.subtotal,
+              commissionRate: merchant.commissionRate,
+              discountAmount: order.discountAmount,
+            },
+          });
+        }
+
+        const customer = this.users.find((candidate) => candidate.phone === order.customerPhone && candidate.role === 'customer');
+        if (customer) {
+          customer.walletBalance = Number(((customer.walletBalance ?? 0) + (order.cashbackEarned ?? 0)).toFixed(2));
         }
       }
     }
@@ -332,6 +441,36 @@ export class InMemoryStore {
 
   getCourier(courierId) {
     return this.couriers.find((courier) => courier.id === courierId) ?? null;
+  }
+
+  requestCourierWithdrawal(courierId, amount) {
+    const courier = this.getCourier(courierId);
+    if (!courier) {
+      return null;
+    }
+    if (amount > courier.wallet.availableBalance) {
+      throw new Error('Insufficient balance');
+    }
+
+    courier.wallet.availableBalance = Number((courier.wallet.availableBalance - amount).toFixed(2));
+    const withdrawal = { id: randomUUID(), amount, kind: 'withdrawal', createdAt: now() };
+    courier.wallet.withdrawals.unshift(withdrawal);
+    this.persist();
+    return withdrawal;
+  }
+
+  getAdminOverview() {
+    const totalOrders = this.orders.length;
+    const deliveredOrders = this.orders.filter((order) => order.status === 'delivered');
+    return {
+      totalOrders,
+      deliveredOrders: deliveredOrders.length,
+      gmv: Number(deliveredOrders.reduce((sum, order) => sum + order.total, 0).toFixed(2)),
+      activeMerchants: this.merchants.filter((merchant) => merchant.status === 'active').length,
+      pausedMerchants: this.merchants.filter((merchant) => merchant.status === 'paused').length,
+      activeCouriers: this.couriers.filter((courier) => courier.isOnline).length,
+      totalCustomers: this.users.filter((user) => user.role === 'customer').length,
+    };
   }
 
   registerClient(response, channel, entityId) {

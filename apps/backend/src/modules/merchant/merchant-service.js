@@ -31,6 +31,44 @@ export class MerchantService {
       cancellationRate: totalOrders ? Number(((cancelledOrders.length / totalOrders) * 100).toFixed(2)) : 0,
       topProducts,
       activeOrders: orders.filter((order) => !['delivered', 'rejected_by_merchant', 'cancelled_by_platform', 'failed_delivery'].includes(order.status)).length,
+      walletBalance: this.store.getMerchant(merchantId)?.walletBalance ?? 0,
     };
+  }
+
+  getFinanceStatement(merchantId) {
+    const ledgerEntries = this.store.listLedgerEntriesForMerchant(merchantId);
+    const balance = ledgerEntries.reduce((sum, entry) => sum + entry.amount, 0);
+
+    return {
+      merchantId,
+      balance: Number(balance.toFixed(2)),
+      entries: ledgerEntries,
+    };
+  }
+
+  getSettings(merchantId) {
+    const merchant = this.store.getMerchant(merchantId);
+    if (!merchant) {
+      return null;
+    }
+
+    return {
+      merchantId: merchant.id,
+      status: merchant.status,
+      averagePrepTimeMin: merchant.averagePrepTimeMin,
+      deliveryTimeMin: merchant.deliveryTimeMin,
+      distanceKm: merchant.distanceKm,
+      tags: merchant.tags,
+    };
+  }
+
+  updateSettings(merchantId, payload) {
+    return this.store.updateMerchant(merchantId, (merchant) => {
+      if (payload.status) merchant.status = payload.status;
+      if (payload.averagePrepTimeMin) merchant.averagePrepTimeMin = Number(payload.averagePrepTimeMin);
+      if (payload.deliveryTimeMin) merchant.deliveryTimeMin = Number(payload.deliveryTimeMin);
+      if (payload.distanceKm) merchant.distanceKm = Number(payload.distanceKm);
+      if (payload.tags) merchant.tags = payload.tags;
+    });
   }
 }
