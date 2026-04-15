@@ -1,0 +1,167 @@
+{
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "total_distritos": 96,
+  "zonas": {
+    "Centro - Sé": [
+      "Bela Vista",
+      "Bom Retiro",
+      "Cambuci",
+      "Consolação",
+      "Liberdade",
+      "República",
+      "Santa Cecília",
+      "Sé"
+    ],
+    "Oeste - Butantã": [
+      "Butantã",
+      "Morumbi",
+      "Raposo Tavares",
+      "Rio Pequeno",
+      "Vila Sônia"
+    ],
+    "Oeste - Lapa": [
+      "Barra Funda",
+      "Jaguara",
+      "Jaguaré",
+      "Lapa",
+      "Perdizes",
+      "Vila Leopoldina"
+    ],
+    "Oeste - Pinheiros": [
+      "Alto de Pinheiros",
+      "Itaim Bibi",
+      "Jardim Paulista",
+      "Pinheiros"
+    ],
+    "Norte - Casa Verde": [
+      "Casa Verde",
+      "Cachoeirinha",
+      "Limão"
+    ],
+    "Norte - Freguesia/Brasilândia": [
+      "Brasilândia",
+      "Freguesia do Ó"
+    ],
+    "Norte - Jaçanã/Tremembé": [
+      "Jaçanã",
+      "Tremembé"
+    ],
+    "Norte - Perus": [
+      "Anhanguera",
+      "Perus"
+    ],
+    "Norte - Pirituba/Jaraguá": [
+      "Jaraguá",
+      "Pirituba",
+      "São Domingos"
+    ],
+    "Norte - Santana/Tucuruvi": [
+      "Mandaqui",
+      "Santana",
+      "Tucuruvi"
+    ],
+    "Norte - Vila Maria/Vila Guilherme": [
+      "Vila Guilherme",
+      "Vila Maria",
+      "Vila Medeiros"
+    ],
+    "Leste - Aricanduva/Formosa/Carrão": [
+      "Aricanduva",
+      "Carrão",
+      "Vila Formosa"
+    ],
+    "Leste - Cidade Tiradentes": [
+      "Cidade Tiradentes"
+    ],
+    "Leste - Ermelino Matarazzo": [
+      "Ermelino Matarazzo",
+      "Ponte Rasa"
+    ],
+    "Leste - Guaianases": [
+      "Guaianases",
+      "Lajeado"
+    ],
+    "Leste - Itaim Paulista": [
+      "Itaim Paulista",
+      "Vila Curuçá"
+    ],
+    "Leste - Itaquera": [
+      "Cidade Líder",
+      "Itaquera",
+      "José Bonifácio",
+      "Parque do Carmo"
+    ],
+    "Leste - Mooca": [
+      "Água Rasa",
+      "Belém",
+      "Brás",
+      "Mooca",
+      "Pari",
+      "Tatuapé"
+    ],
+    "Leste - Penha": [
+      "Artur Alvim",
+      "Cangaíba",
+      "Penha",
+      "Vila Matilde"
+    ],
+    "Leste - São Mateus": [
+      "Iguatemi",
+      "São Mateus",
+      "São Rafael"
+    ],
+    "Leste - São Miguel": [
+      "Jardim Helena",
+      "São Miguel",
+      "Vila Jacuí"
+    ],
+    "Leste - Sapopemba": [
+      "Sapopemba"
+    ],
+    "Leste - Vila Prudente": [
+      "São Lucas",
+      "Vila Prudente"
+    ],
+    "Sul - Campo Limpo": [
+      "Campo Limpo",
+      "Capão Redondo",
+      "Vila Andrade"
+    ],
+    "Sul - Capela do Socorro": [
+      "Cidade Dutra",
+      "Grajaú",
+      "Socorro"
+    ],
+    "Sul - Cidade Ademar": [
+      "Cidade Ademar",
+      "Pedreira"
+    ],
+    "Sul - Ipiranga": [
+      "Cursino",
+      "Ipiranga",
+      "Sacomã"
+    ],
+    "Sul - Jabaquara": [
+      "Jabaquara"
+    ],
+    "Sul - M'Boi Mirim": [
+      "Jardim Ângela",
+      "Jardim São Luís"
+    ],
+    "Sul - Parelheiros": [
+      "Marsilac",
+      "Parelheiros"
+    ],
+    "Sul - Santo Amaro": [
+      "Campo Belo",
+      "Campo Grande",
+      "Santo Amaro"
+    ],
+    "Sul - Vila Mariana": [
+      "Moema",
+      "Saúde",
+      "Vila Mariana"
+    ]
+  }
+}
