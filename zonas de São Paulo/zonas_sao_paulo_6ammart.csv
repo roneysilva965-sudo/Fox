@@ -1,0 +1,97 @@
+regiao,subprefeitura,distrito,slug_zona
+Centro,Sé,Bela Vista,centro-se-bela-vista
+Centro,Sé,Bom Retiro,centro-se-bom-retiro
+Centro,Sé,Cambuci,centro-se-cambuci
+Centro,Sé,Consolação,centro-se-consolacao
+Centro,Sé,Liberdade,centro-se-liberdade
+Centro,Sé,República,centro-se-republica
+Centro,Sé,Santa Cecília,centro-se-santa-cecilia
+Centro,Sé,Sé,centro-se-se
+Oeste,Butantã,Butantã,oeste-butanta-butanta
+Oeste,Butantã,Morumbi,oeste-butanta-morumbi
+Oeste,Butantã,Raposo Tavares,oeste-butanta-raposo-tavares
+Oeste,Butantã,Rio Pequeno,oeste-butanta-rio-pequeno
+Oeste,Butantã,Vila Sônia,oeste-butanta-vila-sonia
+Oeste,Lapa,Barra Funda,oeste-lapa-barra-funda
+Oeste,Lapa,Jaguara,oeste-lapa-jaguara
+Oeste,Lapa,Jaguaré,oeste-lapa-jaguare
+Oeste,Lapa,Lapa,oeste-lapa-lapa
+Oeste,Lapa,Perdizes,oeste-lapa-perdizes
+Oeste,Lapa,Vila Leopoldina,oeste-lapa-vila-leopoldina
+Oeste,Pinheiros,Alto de Pinheiros,oeste-pinheiros-alto-de-pinheiros
+Oeste,Pinheiros,Itaim Bibi,oeste-pinheiros-itaim-bibi
+Oeste,Pinheiros,Jardim Paulista,oeste-pinheiros-jardim-paulista
+Oeste,Pinheiros,Pinheiros,oeste-pinheiros-pinheiros
+Norte,Casa Verde,Casa Verde,norte-casa-verde-casa-verde
+Norte,Casa Verde,Cachoeirinha,norte-casa-verde-cachoeirinha
+Norte,Casa Verde,Limão,norte-casa-verde-limao
+Norte,Freguesia/Brasilândia,Brasilândia,norte-freguesia-brasilandia-brasilandia
+Norte,Freguesia/Brasilândia,Freguesia do Ó,norte-freguesia-brasilandia-freguesia-do-o
+Norte,Jaçanã/Tremembé,Jaçanã,norte-jacana-tremembe-jacana
+Norte,Jaçanã/Tremembé,Tremembé,norte-jacana-tremembe-tremembe
+Norte,Perus,Anhanguera,norte-perus-anhanguera
+Norte,Perus,Perus,norte-perus-perus
+Norte,Pirituba/Jaraguá,Jaraguá,norte-pirituba-jaragua-jaragua
+Norte,Pirituba/Jaraguá,Pirituba,norte-pirituba-jaragua-pirituba
+Norte,Pirituba/Jaraguá,São Domingos,norte-pirituba-jaragua-sao-domingos
+Norte,Santana/Tucuruvi,Mandaqui,norte-santana-tucuruvi-mandaqui
+Norte,Santana/Tucuruvi,Santana,norte-santana-tucuruvi-santana
+Norte,Santana/Tucuruvi,Tucuruvi,norte-santana-tucuruvi-tucuruvi
+Norte,Vila Maria/Vila Guilherme,Vila Guilherme,norte-vila-maria-vila-guilherme-vila-guilherme
+Norte,Vila Maria/Vila Guilherme,Vila Maria,norte-vila-maria-vila-guilherme-vila-maria
+Norte,Vila Maria/Vila Guilherme,Vila Medeiros,norte-vila-maria-vila-guilherme-vila-medeiros
+Leste,Aricanduva/Formosa/Carrão,Aricanduva,leste-aricanduva-formosa-carrao-aricanduva
+Leste,Aricanduva/Formosa/Carrão,Carrão,leste-aricanduva-formosa-carrao-carrao
+Leste,Aricanduva/Formosa/Carrão,Vila Formosa,leste-aricanduva-formosa-carrao-vila-formosa
+Leste,Cidade Tiradentes,Cidade Tiradentes,leste-cidade-tiradentes-cidade-tiradentes
+Leste,Ermelino Matarazzo,Ermelino Matarazzo,leste-ermelino-matarazzo-ermelino-matarazzo
+Leste,Ermelino Matarazzo,Ponte Rasa,leste-ermelino-matarazzo-ponte-rasa
+Leste,Guaianases,Guaianases,leste-guaianases-guaianases
+Leste,Guaianases,Lajeado,leste-guaianases-lajeado
+Leste,Itaim Paulista,Itaim Paulista,leste-itaim-paulista-itaim-paulista
+Leste,Itaim Paulista,Vila Curuçá,leste-itaim-paulista-vila-curuca
+Leste,Itaquera,Cidade Líder,leste-itaquera-cidade-lider
+Leste,Itaquera,Itaquera,leste-itaquera-itaquera
+Leste,Itaquera,José Bonifácio,leste-itaquera-jose-bonifacio
+Leste,Itaquera,Parque do Carmo,leste-itaquera-parque-do-carmo
+Leste,Mooca,Água Rasa,leste-mooca-agua-rasa
+Leste,Mooca,Belém,leste-mooca-belem
+Leste,Mooca,Brás,leste-mooca-bras
+Leste,Mooca,Mooca,leste-mooca-mooca
+Leste,Mooca,Pari,leste-mooca-pari
+Leste,Mooca,Tatuapé,leste-mooca-tatuape
+Leste,Penha,Artur Alvim,leste-penha-artur-alvim
+Leste,Penha,Cangaíba,leste-penha-cangaiba
+Leste,Penha,Penha,leste-penha-penha
+Leste,Penha,Vila Matilde,leste-penha-vila-matilde
+Leste,São Mateus,Iguatemi,leste-sao-mateus-iguatemi
+Leste,São Mateus,São Mateus,leste-sao-mateus-sao-mateus
+Leste,São Mateus,São Rafael,leste-sao-mateus-sao-rafael
+Leste,São Miguel,Jardim Helena,leste-sao-miguel-jardim-helena
+Leste,São Miguel,São Miguel,leste-sao-miguel-sao-miguel
+Leste,São Miguel,Vila Jacuí,leste-sao-miguel-vila-jacui
+Leste,Sapopemba,Sapopemba,leste-sapopemba-sapopemba
+Leste,Vila Prudente,São Lucas,leste-vila-prudente-sao-lucas
+Leste,Vila Prudente,Vila Prudente,leste-vila-prudente-vila-prudente
+Sul,Campo Limpo,Campo Limpo,sul-campo-limpo-campo-limpo
+Sul,Campo Limpo,Capão Redondo,sul-campo-limpo-capao-redondo
+Sul,Campo Limpo,Vila Andrade,sul-campo-limpo-vila-andrade
+Sul,Capela do Socorro,Cidade Dutra,sul-capela-do-socorro-cidade-dutra
+Sul,Capela do Socorro,Grajaú,sul-capela-do-socorro-grajau
+Sul,Capela do Socorro,Socorro,sul-capela-do-socorro-socorro
+Sul,Cidade Ademar,Cidade Ademar,sul-cidade-ademar-cidade-ademar
+Sul,Cidade Ademar,Pedreira,sul-cidade-ademar-pedreira
+Sul,Ipiranga,Cursino,sul-ipiranga-cursino
+Sul,Ipiranga,Ipiranga,sul-ipiranga-ipiranga
+Sul,Ipiranga,Sacomã,sul-ipiranga-sacoma
+Sul,Jabaquara,Jabaquara,sul-jabaquara-jabaquara
+Sul,M'Boi Mirim,Jardim Ângela,sul-mboi-mirim-jardim-angela
+Sul,M'Boi Mirim,Jardim São Luís,sul-mboi-mirim-jardim-sao-luis
+Sul,Parelheiros,Marsilac,sul-parelheiros-marsilac
+Sul,Parelheiros,Parelheiros,sul-parelheiros-parelheiros
+Sul,Santo Amaro,Campo Belo,sul-santo-amaro-campo-belo
+Sul,Santo Amaro,Campo Grande,sul-santo-amaro-campo-grande
+Sul,Santo Amaro,Santo Amaro,sul-santo-amaro-santo-amaro
+Sul,Vila Mariana,Moema,sul-vila-mariana-moema
+Sul,Vila Mariana,Saúde,sul-vila-mariana-saude
+Sul,Vila Mariana,Vila Mariana,sul-vila-mariana-vila-mariana
